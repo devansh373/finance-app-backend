@@ -46,7 +46,7 @@ export const signup = async (req: MulterRequest, res: Response) => {
     
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
     res.cookie("token", token, {
-      sameSite: "strict",
+      sameSite: "none",
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60,
@@ -90,10 +90,10 @@ export const login = async (req: Request, res: Response) => {
       JWT_SECRET,
       { expiresIn: "1h" }
     );
-console.log(token)
+// console.log(token)
     
     res.cookie("token", token, {
-      sameSite: "strict",
+      sameSite: "none",
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60, 
