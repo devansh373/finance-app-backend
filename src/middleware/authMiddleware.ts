@@ -9,7 +9,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 export const authMiddleware = (req: MulterRequest, res: Response, next: NextFunction) => {
   try {
     
-    
+    console.log("ts file",req.cookies)
     const token = req.cookies?.token;
 
     if (!token) {

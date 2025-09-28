@@ -6,7 +6,8 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 
 
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
+import cookieParser from 'cookie-parser'
 import authRoutes from "./routes/authRoutes";
 import productRoutes from "./routes/productRoutes";
 import transactionRoutes from "./routes/transactionRoutes";
