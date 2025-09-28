@@ -32,7 +32,7 @@ const signup = async (req, res) => {
         await user.save();
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
         res.cookie("token", token, {
-            sameSite: "strict",
+            sameSite: "none",
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             maxAge: 1000 * 60 * 60,
@@ -65,9 +65,9 @@ const login = async (req, res) => {
         if (!isMatch)
             return res.status(400).json({ msg: "Invalid credentials" });
         const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: "1h" });
-        console.log(token);
+        // console.log(token)
         res.cookie("token", token, {
-            sameSite: "strict",
+            sameSite: "none",
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             maxAge: 1000 * 60 * 60,
