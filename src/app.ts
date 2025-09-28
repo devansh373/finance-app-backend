@@ -19,11 +19,11 @@ dotenv.config();
 
 const app = express();
 app.use(cookieParser());
-console.log({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// console.log({
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//   api_key: process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_API_SECRET,
+// });
 
 
 app.use(helmet()); 
@@ -39,8 +39,8 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/admin", adminRoutes);
 
 
-app.get("/", (res:Response) => {
-  res.send("Financial Trading App API is running");
-});
+// app.get("/", (res:Response) => {
+//   res.send("Financial Trading App API is running");
+// });
 
 export default app;
