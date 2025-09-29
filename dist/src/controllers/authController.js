@@ -14,7 +14,9 @@ const signup = async (req, res) => {
     try {
         const { name, email, password, panNumber } = req.body;
         if (!name || !email || !password || !panNumber || !req.file) {
-            return res.status(400).json({ msg: "All fields including document are required" });
+            return res
+                .status(400)
+                .json({ msg: "All fields including document are required" });
         }
         const existing = await User_1.default.findOne({ email });
         if (existing)
@@ -64,11 +66,13 @@ const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch)
             return res.status(400).json({ msg: "Invalid credentials" });
-        const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
+            expiresIn: "1h",
+        });
         // console.log(token)
         res.cookie("token", token, {
-            sameSite: "none",
-            // sameSite: "strict",
+            sameSite: "lax",
+            path: "/",
             httpOnly: true,
             // secure: process.env.NODE_ENV === "production",
             secure: true,
