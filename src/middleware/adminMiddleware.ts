@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import User from "../models/User";
+import {  Response, NextFunction } from "express";
+import {User} from "../models/User";
 
 export const adminMiddleware = async (req: any, res: Response, next: NextFunction) => {
   try {

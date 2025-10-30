@@ -1,0 +1,83 @@
+// // This is your Prisma schema file,
+// // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// generator client {
+//   provider = "prisma-client-js"
+//   output   = "../src/generated/prisma"
+// }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// model User {
+//   id            Int          @id @default(autoincrement())
+//   email         String       @unique
+//   name          String?
+//   createdAt     DateTime     @default(now())
+//   wallet        Wallet?
+//   transactions  Transaction[]
+// }
+
+// model Wallet {
+//   id        Int      @id @default(autoincrement())
+//   user      User     @relation(fields: [userId], references: [id])
+//   userId    Int      @unique
+//   balance   Decimal  @db.Decimal(28, 8) @default("0") // high precision for money
+//   updatedAt DateTime @updatedAt
+// }
+
+// model Transaction {
+//   id         Int      @id @default(autoincrement())
+//   user       User     @relation(fields: [userId], references: [id])
+//   userId     Int
+//   amount     Decimal  @db.Decimal(28, 8)
+//   type       TransactionType
+//   meta       Json?
+//   createdAt  DateTime @default(now())
+
+//   @@index([userId, createdAt])
+// }
+
+
+model Wallet {
+  id        Int      @id @default(autoincrement())
+  userId    String   // this will store MongoDB user _id as string
+  balance   Decimal  @db.Decimal(28, 8) @default("0")
+  updatedAt DateTime @updatedAt
+
+  transactions Transaction[]
+}
+
+model Transaction {
+  id         Int      @id @default(autoincrement())
+  walletId   Int
+  amount     Decimal  @db.Decimal(28, 8)
+  type       TransactionType
+  meta       Json?
+  createdAt  DateTime @default(now())
+   userId    String
+  wallet     Wallet   @relation(fields: [walletId], references: [id])
+  @@index([userId, createdAt])
+}
+
+
+
+enum TransactionType {
+  CREDIT
+  DEBIT
+}

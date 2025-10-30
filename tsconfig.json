@@ -6,10 +6,13 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": "./src/",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
   },
-  "include": ["/**/*", "server.ts"],
-  "exclude": ["node_modules"]
+  // "include": ["/**/*", "server.ts"],
+  "include": ["src/**/*", "server.ts"],
+  "exclude": ["node_modules","dist"]
 }

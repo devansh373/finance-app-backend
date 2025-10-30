@@ -12,7 +12,11 @@ import authRoutes from "./routes/authRoutes";
 import productRoutes from "./routes/productRoutes";
 import transactionRoutes from "./routes/transactionRoutes";
 import adminRoutes from "./routes/adminRoutes";
-import { Response } from "express";
+import newsRoutes from './routes/newsRoutes'
+import chatRoutes from "./routes/chatRoutes";
+
+// import { Response } from "express";
+
 
 
 
@@ -38,6 +42,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/news",newsRoutes)
+app.use("/api/chat", chatRoutes);
 
 
 // app.get("/", (res:Response) => {
