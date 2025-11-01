@@ -236,8 +236,9 @@ export const addToWatchlist = async (req: any, res: Response) => {
     }
 
     res.json({ msg: "Added to watchlist", watchlist: user.watchlist });
-  } catch (err) {
-    res.status(500).json({ msg: "Error updating watchlist" });
+  } catch (err:any) {
+    console.log(err)
+    res.status(500).json({ msg: err.msg||"Error updating watchlist" });
   }
 };
 

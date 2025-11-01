@@ -126,11 +126,7 @@ export const getAllTransactions = async (_req: Request, res: Response) => {
 };
 
 
-/**
- * @desc    Get all PAN submissions that are pending approval
- * @route   GET /api/v1/admin/kyc/pending-pans
- * @access  Private (Admin)
- */
+
 export const getPendingPans = async (req: any, res: any) => {
   try {
     // Find all PAN documents with "Approval_Pending" status
@@ -151,11 +147,7 @@ export const getPendingPans = async (req: any, res: any) => {
   }
 };
 
-/**
- * @desc    Approve or Reject a PAN submission
- * @route   PATCH /api/v1/admin/kyc/pan/:panId
- * @access  Private (Admin)
- */
+
 export const updatePanStatus = async (req: any, res: any) => {
   try {
     const { panId } = req.params;
