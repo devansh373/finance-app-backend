@@ -1,17 +1,24 @@
 import { Request, Response } from "express";
 
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+
+import bcrypt from "bcrypt";
+
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 import { Pan, User } from "../models/User";
-import { MulterRequest } from "../types/multer-request";
+// import { MulterRequest } from "../types/multer-request";
 import { PrismaClient } from "@prisma/client";
 
 const JWT_SECRET = process.env.JWT_SECRET;
-console.log(JWT_SECRET);
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in environment variables");
+}
+// console.log(JWT_SECRET);
 
-export const signup = async (req: MulterRequest, res: Response) => {
+export const signup = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
 

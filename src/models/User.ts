@@ -35,6 +35,7 @@ const PanSchema = new Schema<IPan>({
     required: true,
     unique: true,
     sparse:true,
+    default:null,
   },
   panImageLink: {
     type: String,

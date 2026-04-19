@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {Pan, User} from "../models/User";
 // import Transaction from "../models/Transaction";
 import { PrismaClient } from "@prisma/client";
-import Product from "../models/Product";
+import {Product} from "../models/Product";
 import mongoose from "mongoose";
 
 export const getAllUsers = async (_req: Request, res: Response) => {
