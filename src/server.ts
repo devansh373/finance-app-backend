@@ -35,17 +35,23 @@ async function startServer() {
     console.log("🟢 Connecting to MongoDB...");
     await mongoose.connect(MONGO_URI);
     console.log("✅ MongoDB connected successfully");
-
-    console.log("🟣 Initializing Chroma...");
-    await initializeChroma(); // run only once
-
-    app.listen(PORT, () => {
-      console.log(`🟢 Server running on port ${PORT}`);
-    });
   } catch (err: any) {
-    console.error("❌ Startup error:", err);
+    console.error("❌ MongoDB connection failed:", err.message);
     process.exit(1);
   }
+
+  // Chroma is optional — server starts even if RAG init fails
+  try {
+    console.log("🟣 Initializing Chroma (RAG)...");
+    await initializeChroma();
+    console.log("✅ Chroma initialized successfully");
+  } catch (err: any) {
+    console.warn("⚠️  Chroma init failed — chatbot will be unavailable:", err.message);
+  }
+
+  app.listen(PORT, () => {
+    console.log(`🟢 Server running on port ${PORT}`);
+  });
 }
 
 startServer();

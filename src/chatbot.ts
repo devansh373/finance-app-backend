@@ -13,6 +13,7 @@ export async function chatWithRAG(userQuestion: string) {
   const model = new ChatGoogleGenerativeAI({
     model: "gemini-2.0-flash-lite",
     apiKey: process.env.CHATBOT_API_KEY!,
+    maxRetries: 0, // Fail fast in development
   });
 
   // Step 3: Combine context + question into a single prompt
