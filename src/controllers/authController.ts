@@ -30,7 +30,7 @@ export const signup = async (req: Request, res: Response) => {
 
     const existing = await User.findOne({ email });
     if (existing)
-      return res.status(400).json({ msg: "Email already registered" });
+      return res.status(400).json({ msg: "This email is already registered. Please login instead." });
 
     const hashedPw = await bcrypt.hash(password, 10);
 
@@ -111,7 +111,6 @@ export const signup = async (req: Request, res: Response) => {
 export const submitPan = async (req: any, res: any) => {
   try {
     const { panNumber } = req.body;
-    const path = (req as any).file.path;
     const user = req.user; // from auth middleware
     console.log(req.user);
 
@@ -120,13 +119,18 @@ export const submitPan = async (req: any, res: any) => {
       !req.file ||
       !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panNumber)
     ) {
-      return res.status(400).json({ msg: "Invalid PAN format" });
+      return res.status(400).json({ msg: "Invalid PAN format or missing image" });
     }
+
+    const path = (req as any).file.path;
 
     // Optional: check duplicate PAN across users
     const existing = await Pan.findOne({ panNumber });
-    if (existing && existing.user.toString() !== user.id.toString()) {
-      return res.status(400).json({ msg: "PAN already used" });
+    if (existing) {
+      if (existing.user.toString() === user.id.toString()) {
+        return res.status(400).json({ msg: "You have already submitted this PAN. It is currently under approval." });
+      }
+      return res.status(400).json({ msg: "This PAN number is already registered with another account." });
     }
 
     if (!user) return res.status(404).json({ msg: "User not found" });

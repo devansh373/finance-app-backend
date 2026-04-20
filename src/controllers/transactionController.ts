@@ -1,8 +1,9 @@
 import { Response } from "express";
 // import Transaction from "../models/Transaction";
-import {User} from "../models/User";
-import {Product} from "../models/Product";
+import { User } from "../models/User";
+import { Product } from "../models/Product";
 import { PrismaClient, TransactionType } from "@prisma/client";
+import mongoose from "mongoose";
 
 
 // export const buyProduct = async (req: any, res: Response) => {
@@ -47,14 +48,24 @@ const prisma = new PrismaClient();
 
 export const buyProduct = async (req: any, res: Response) => {
   try {
-    const { productId, units,price } = req.body;
+    let { productId, units, price } = req.body;
 
     // 1️⃣ Fetch user and product from MongoDB
     const user = await User.findById(req.user.id);
-    const product = await Product.findById(productId);
+    
+    // If productId is a symbol (like AAPL), find the actual product
+    let product;
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      product = await Product.findOne({ symbol: productId });
+    } else {
+      product = await Product.findById(productId);
+    }
 
     if (!user || !product)
       return res.status(404).json({ msg: "User/Product not found" });
+    
+    // Re-assign correct Mongo ID for subsequent operations
+    productId = product._id;
 
     const totalAmount = price * units;
 
@@ -225,10 +236,17 @@ export const getWatchlist = async (req: any, res: Response) => {
 
 export const addToWatchlist = async (req: any, res: Response) => {
   try {
-    const { productId } = req.body;
+    let { productId } = req.body;
     const user = await User.findById(req.user.id);
 
     if (!user) return res.status(404).json({ msg: "User not found" });
+
+    // If productId is a symbol (like AAPL), find the actual product ID
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      const product = await Product.findOne({ symbol: productId });
+      if (!product) return res.status(404).json({ msg: "Product not found" });
+      productId = product._id;
+    }
 
     if (!user.watchlist.includes(productId)) {
       user.watchlist.push(productId);
